@@ -10,7 +10,6 @@ export interface InputConfig {
 
 /**
  * Standalone Input primitive
- * No inheritance - just a concrete implementation
  */
 export class Input {
   private readonly _locator: Locator;
@@ -19,29 +18,34 @@ export class Input {
     this._locator = this.buildLocator();
   }
 
-  @step('Input: Fill "{0}"')
   async fill(value: string): Promise<void> {
-    await this._locator.fill(value);
+    return await step(`Input: Fill "${value}"`, async () => {
+      await this._locator.fill(value);
+    });
   }
 
-  @step('Input: Clear field')
   async clear(): Promise<void> {
-    await this._locator.clear();
+    return await step('Input: Clear field', async () => {
+      await this._locator.clear();
+    });
   }
 
-  @step('Input: Get value')
   async getValue(): Promise<string> {
-    return await this._locator.inputValue();
+    return await step('Input: Get value', async () => {
+      return await this._locator.inputValue();
+    });
   }
 
-  @step('Input: Check if visible')
   async isVisible(): Promise<boolean> {
-    return await this._locator.isVisible();
+    return await step('Input: Check if visible', async () => {
+      return await this._locator.isVisible();
+    });
   }
 
-  @step('Input: Wait for visible')
   async waitForVisible(): Promise<void> {
-    await this._locator.waitFor({ state: 'visible' });
+    return await step('Input: Wait for visible', async () => {
+      await this._locator.waitFor({ state: 'visible' });
+    });
   }
 
   get element(): Locator {

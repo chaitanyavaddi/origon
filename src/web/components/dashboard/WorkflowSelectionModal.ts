@@ -20,36 +20,39 @@ export class WorkflowSelectionModal extends Modal {
     });
   }
 
-  @step('WorkflowSelectionModal: Search workflows "{0}"')
   async searchWorkflows(query: string): Promise<void> {
-    await this.waitForOpen();
-    await this.searchInput.fill(query);
-    await this.page.waitForFunction(
-      () => !document.querySelector('[aria-busy="true"]'),
-      { timeout: 5000 }
-    ).catch(() => {});
-    
-    await this.page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
+    return await step(`WorkflowSelectionModal: Search workflows "${query}"`, async () => {
+      await this.waitForOpen();
+      await this.searchInput.fill(query);
+      await this.page.waitForFunction(
+        () => !document.querySelector('[aria-busy="true"]'),
+        { timeout: 5000 }
+      ).catch(() => {});
+      
+      await this.page.waitForLoadState('networkidle', { timeout: 3000 }).catch(() => {});
+    });
   }
 
-  @step('WorkflowSelectionModal: Select workflow "{0}"')
   async selectWorkflow(workflowName: string): Promise<void> {
-    const workflow = this.getWorkflowItem(workflowName);
-    await workflow.waitFor({ state: 'visible' });
-    await workflow.click();
+    return await step(`WorkflowSelectionModal: Select workflow "${workflowName}"`, async () => {
+      const workflow = this.getWorkflowItem(workflowName);
+      await workflow.waitFor({ state: 'visible' });
+      await workflow.click();
+    });
   }
 
-  @step('WorkflowSelectionModal: Get visible workflows')
   async getVisibleWorkflows(): Promise<string[]> {
-    const items = await this.page
-      .locator('[role="listitem"][aria-label]')
-      .all();
-    
-    const names = await Promise.all(
-      items.map(item => item.getAttribute('aria-label'))
-    );
-    
-    return names.filter(Boolean) as string[];
+    return await step('WorkflowSelectionModal: Get visible workflows', async () => {
+      const items = await this.page
+        .locator('[role="listitem"][aria-label]')
+        .all();
+      
+      const names = await Promise.all(
+        items.map(item => item.getAttribute('aria-label'))
+      );
+      
+      return names.filter(Boolean) as string[];
+    });
   }
 
   private getWorkflowItem(workflowName: string): Locator {

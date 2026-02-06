@@ -18,24 +18,28 @@ export class Button {
     this._locator = this.buildLocator();
   }
 
-  @step('Button: Click')
   async click(): Promise<void> {
-    await this._locator.click();
+    return await step('Button: Click', async () => {
+      await this._locator.click();
+    });
   }
 
-  @step('Button: Check if enabled')
   async isEnabled(): Promise<boolean> {
-    return await this._locator.isEnabled();
+    return await step('Button: Check if enabled', async () => {
+      return await this._locator.isEnabled();
+    });
   }
 
-  @step('Button: Check if visible')
   async isVisible(): Promise<boolean> {
-    return await this._locator.isVisible();
+    return await step('Button: Check if visible', async () => {
+      return await this._locator.isVisible();
+    });
   }
 
-  @step('Button: Wait for visible')
   async waitForVisible(): Promise<void> {
-    await this._locator.waitFor({ state: 'visible' });
+    return await step('Button: Wait for visible', async () => {
+      await this._locator.waitFor({ state: 'visible' });
+    });
   }
 
   get element(): Locator {

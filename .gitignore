@@ -12,3 +12,14 @@ allure-report/
 Downloads/
 html-report.zip/
 output/
+# Authentication state files
+.auth/
+*.json.auth
+*_state.json
+
+# Developer config (personal information)
+core/config/dev.json
+
+# Environment variables
+.env
+.env.local

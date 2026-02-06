@@ -8,22 +8,25 @@ import { step } from '@core/reporting/allure';
 export class Sidebar {
   constructor(protected page: Page) {}
 
-  @step('Sidebar: Click navigation item "{0}"')
   async clickNavItem(text: string): Promise<void> {
-    await this.getNavItem(text).click();
+    return await step(`Sidebar: Click navigation item "${text}"`, async () => {
+      await this.getNavItem(text).click();
+    });
   }
 
-  @step('Sidebar: Check if navigation item "{0}" is active')
   async isNavItemActive(text: string): Promise<boolean> {
-    const item = this.getNavItem(text).locator('..');
-    const classes = await item.getAttribute('class') || '';
-    return classes.includes('_catalystNavbarItemActive_');
+    return await step(`Sidebar: Check if navigation item "${text}" is active`, async () => {
+      const item = this.getNavItem(text).locator('..');
+      const classes = await item.getAttribute('class') || '';
+      return classes.includes('_catalystNavbarItemActive_');
+    });
   }
 
-  @step('Sidebar: Get user email')
   async getUserEmail(): Promise<string> {
-    const userProfile = this.page.locator('[data-testid="user-profile-menu"]');
-    return await userProfile.textContent() || '';
+    return await step('Sidebar: Get user email', async () => {
+      const userProfile = this.page.locator('[data-testid="user-profile-menu"]');
+      return await userProfile.textContent() || '';
+    });
   }
 
   protected getNavItem(text: string): Locator {

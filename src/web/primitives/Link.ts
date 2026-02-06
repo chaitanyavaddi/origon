@@ -18,19 +18,28 @@ export class Link {
     this._locator = this.buildLocator();
   }
 
-  @step('Link: Click')
   async click(): Promise<void> {
-    await this._locator.click();
+    return await step('Link: Click', async () => {
+      await this._locator.click();
+    });
   }
 
-  @step('Link: Check if visible')
   async isVisible(): Promise<boolean> {
-    return await this._locator.isVisible();
+    return await step('Link: Check if visible', async () => {
+      return await this._locator.isVisible();
+    });
   }
 
-  @step('Link: Get href')
+  async waitForVisible(options?: { timeout?: number }): Promise<void> {
+    return await step('Link: Wait for visible', async () => {
+      await this._locator.waitFor({ state: 'visible', timeout: options?.timeout });
+    });
+  }
+
   async getHref(): Promise<string | null> {
-    return await this._locator.getAttribute('href');
+    return await step('Link: Get href', async () => {
+      return await this._locator.getAttribute('href');
+    });
   }
 
   get element(): Locator {

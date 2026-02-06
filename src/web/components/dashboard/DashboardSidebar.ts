@@ -11,33 +11,39 @@ export class DashboardSidebar extends Sidebar {
     super(page);
   }
 
-  @step('DashboardSidebar: Click Home')
   async clickHome(): Promise<void> {
-    await this.clickNavItem('Home');
+    return await step('DashboardSidebar: Click Home', async () => {
+      await this.clickNavItem('Home');
+    });
   }
 
-  @step('DashboardSidebar: Click Dashboards')
   async clickDashboards(): Promise<void> {
-    await this.clickNavItem('Dashboards');
+    return await step('DashboardSidebar: Click Dashboards', async () => {
+      await this.clickNavItem('Dashboards');
+    });
   }
 
-  @step('DashboardSidebar: Click Tasks')
   async clickTasks(): Promise<void> {
-    await this.clickNavItem('Tasks');
+    return await step('DashboardSidebar: Click Tasks', async () => {
+      await this.clickNavItem('Tasks');
+    });
   }
 
-  @step('DashboardSidebar: Check if Home is active')
   async isHomeActive(): Promise<boolean> {
-    return await this.isNavItemActive('Home');
+    return await step('DashboardSidebar: Check if Home is active', async () => {
+      return await this.isNavItemActive('Home');
+    });
   }
 
-  @step('DashboardSidebar: Check if Dashboards is active')
   async isDashboardsActive(): Promise<boolean> {
-    return await this.isNavItemActive('Dashboards');
+    return await step('DashboardSidebar: Check if Dashboards is active', async () => {
+      return await this.isNavItemActive('Dashboards');
+    });
   }
 
-  @step('DashboardSidebar: Check if Tasks is active')
   async isTasksActive(): Promise<boolean> {
-    return await this.isNavItemActive('Tasks');
+    return await step('DashboardSidebar: Check if Tasks is active', async () => {
+      return await this.isNavItemActive('Tasks');
+    });
   }
 }

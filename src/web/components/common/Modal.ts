@@ -23,25 +23,29 @@ export class Modal {
     this.closeButton = new Button(page, { selector: closeSelector });
   }
 
-  @step('Modal: Check if open')
   async isOpen(): Promise<boolean> {
-    return await this._locator.isVisible();
+    return await step('Modal: Check if open', async () => {
+      return await this._locator.isVisible();
+    });
   }
 
-  @step('Modal: Close')
   async close(): Promise<void> {
-    await this.closeButton.click();
-    await this.waitForClose();
+    return await step('Modal: Close', async () => {
+      await this.closeButton.click();
+      await this.waitForClose();
+    });
   }
 
-  @step('Modal: Wait for open')
   async waitForOpen(): Promise<void> {
-    await this._locator.waitFor({ state: 'visible', timeout: 5000 });
+    return await step('Modal: Wait for open', async () => {
+      await this._locator.waitFor({ state: 'visible', timeout: 5000 });
+    });
   }
 
-  @step('Modal: Wait for close')
   async waitForClose(): Promise<void> {
-    await this._locator.waitFor({ state: 'hidden', timeout: 5000 });
+    return await step('Modal: Wait for close', async () => {
+      await this._locator.waitFor({ state: 'hidden', timeout: 5000 });
+    });
   }
 
   get element(): Locator {

@@ -21,29 +21,33 @@ export class DashboardPage extends PageFragment {
     this.seeMoreButton = new Button(page, { text: 'See More' });
   }
 
-  @step('DashboardPage: Navigate to dashboard')
   async navigate(): Promise<void> {
-    const config = getConfig();
-    await this.page.goto(`${config.baseUrl}/home`);
-    await this.waitForLoad();
+    return await step('DashboardPage: Navigate to dashboard', async () => {
+      const config = getConfig();
+      await this.page.goto(`${config.baseUrl}/home`);
+      await this.waitForLoad();
+    });
   }
 
-  @step('DashboardPage: Wait for dashboard to load')
   async waitForDashboardLoad(): Promise<void> {
-    await this.sidebar.element.waitFor({ state: 'visible' });
+    return await step('DashboardPage: Wait for dashboard to load', async () => {
+      await this.sidebar.element.waitFor({ state: 'visible' });
+    });
   }
 
-  @step('DashboardPage: Open See More modal')
   async openSeeMoreModal(): Promise<WorkflowSelectionModal> {
-    await this.seeMoreButton.click();
-    const modal = new WorkflowSelectionModal(this.page);
-    await modal.waitForOpen();
-    return modal;
+    return await step('DashboardPage: Open See More modal', async () => {
+      await this.seeMoreButton.click();
+      const modal = new WorkflowSelectionModal(this.page);
+      await modal.waitForOpen();
+      return modal;
+    });
   }
 
-  @step('DashboardPage: Check if Home is active')
   async isHomeActive(): Promise<boolean> {
-    return await this.sidebar.isHomeActive();
+    return await step('DashboardPage: Check if Home is active', async () => {
+      return await this.sidebar.isHomeActive();
+    });
   }
 
   // Expose sidebar for direct access if needed

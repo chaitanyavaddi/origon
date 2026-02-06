@@ -1,14 +1,22 @@
 import { defineConfig, devices } from '@playwright/test';
-import { getConfig } from './core/config/environment';
+import dotenv from 'dotenv';
+import { env, getBaseUrl } from './core/config/env-loader';
 
-const envConfig = getConfig();
+// Load environment variables from .env file
+dotenv.config();
 
 export default defineConfig({
   testDir: './tests',
-  timeout: envConfig.timeout,
-  retries: process.env.CI ? 2 : 0,
-  workers: process.env.CI ? 1 : undefined,
-  
+  timeout: env.DEFAULT_TIMEOUT,
+  retries: env.CI ? env.TEST_RETRIES_CI : env.TEST_RETRIES,
+  workers: env.CI ? env.TEST_WORKERS_CI : env.TEST_WORKERS,
+
+  // Global setup - runs before all tests
+  globalSetup: './global-setup.ts',
+
+  // Global teardown - runs after all tests
+  globalTeardown: './global-teardown.ts',
+
   reporter: [
     ['html'],
     ['list'],
@@ -20,11 +28,11 @@ export default defineConfig({
   ],
 
   use: {
-    baseURL: envConfig.baseUrl,
+    baseURL: getBaseUrl(),
     trace: 'retain-on-failure',
     screenshot: 'only-on-failure',
     video: 'retain-on-failure',
-    actionTimeout: 10000,
+    actionTimeout: env.ACTION_TIMEOUT,
   },
 
   projects: [

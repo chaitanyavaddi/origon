@@ -7,15 +7,17 @@ import { step } from '@core/reporting/allure';
 export class Header {
   constructor(protected page: Page) {}
 
-  @step('Header: Get title')
   async getTitle(): Promise<string> {
-    const title = this.page.locator('header h1');
-    return await title.textContent() || '';
+    return await step('Header: Get title', async () => {
+      const title = this.page.locator('header h1');
+      return await title.textContent() || '';
+    });
   }
 
-  @step('Header: Check if visible')
   async isVisible(): Promise<boolean> {
-    return await this.element.isVisible();
+    return await step('Header: Check if visible', async () => {
+      return await this.element.isVisible();
+    });
   }
 
   get element(): Locator {

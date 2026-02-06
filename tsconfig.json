@@ -7,7 +7,7 @@
     // Target and module
     "target": "ES2022",
     "module": "commonjs",
-    "lib": ["ES2022"],
+    "lib": ["ES2022", "dom"],
     
     // Module resolution
     "moduleResolution": "node",
@@ -22,16 +22,21 @@
     // Path mapping
     "baseUrl": ".",
     "paths": {
+      "@/*": ["./*"],
       "@core/*": ["core/*"],
       "@web/*": ["src/web/*"],
       "@api/*": ["src/api/*"],
-      "@src/*": ["src/*"]
+      "@src/*": ["src/*"],
+      "@fixtures/*": ["fixtures/*"]
     }
   },
   "include": [
     "src/**/*",
     "tests/**/*",
-    "core/**/*"
+    "core/**/*",
+    "fixtures/**/*",
+    "global-setup.ts",
+    "global-teardown.ts"
   ],
   "exclude": [
     "node_modules",

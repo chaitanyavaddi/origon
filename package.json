@@ -4,6 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
+    "setup": "node scripts/setup.js",
     "test": "playwright test",
     "test:headed": "playwright test --headed",
     "test:debug": "playwright test --debug",
@@ -19,7 +20,8 @@
   "devDependencies": {
     "@playwright/test": "^1.58.1",
     "@types/node": "^25.1.0",
-    "allure-playwright": "^3.4.5"
+    "allure-playwright": "^3.4.5",
+    "dotenv": "^16.6.1"
   },
   "dependencies": {
     "@allurereport/plugin-awesome": "^3.1.0",

@@ -7,89 +7,103 @@ import { Input } from '@web/primitives/Input';
 import { getConfig } from '@core/config/environment';
 
 /**
- * Login Page - composes primitives directly (no domain components needed)
+ * Login Page - Simple primitives wrapper
+ * For complex login flows, use AuthSteps instead
  */
 export class LoginPage extends PageFragment {
-  // Step 1 elements
+  // UI elements
   private associateLoginLink: Link;
-  
-  // Step 2 elements
+  private traineeLoginLink: Link;
   private emailPasswordButton: Button;
-  
-  // Step 3 elements
   private usernameInput: Input;
   private passwordInput: Input;
   private submitButton: Button;
 
   constructor(page: Page) {
     super(page);
-    
-    // Step 1: Initial login page
+
+    // Initialize primitives
     this.associateLoginLink = new Link(page, {
-      href: '/login/basic?next=/home',
+      href: '/login/basic',
       text: 'ecatest Associate'
     });
-    
-    // Step 2: SSO options page
+
+    this.traineeLoginLink = new Link(page, {
+      href: '/login/otp',
+      text: 'OS3 Trainee Login'
+    });
+
     this.emailPasswordButton = new Button(page, {
       text: 'Login using e-mail and password'
     });
-    
-    // Step 3: Email/password form
+
     this.usernameInput = new Input(page, { name: 'username' });
     this.passwordInput = new Input(page, { name: 'password' });
-    this.submitButton = new Button(page, { ariaLabel: 'Log in' });
+    this.submitButton = new Button(page, { ariaLabel: 'Login' });
   }
 
-  @step('LoginPage: Navigate to login')
   async navigate(): Promise<void> {
-    const config = getConfig();
-    await this.page.goto(`${config.baseUrl}/login/?next=/home`);
-    await this.waitForLoad();
+    return await step('LoginPage: Navigate to login', async () => {
+      const config = getConfig();
+      await this.page.goto(`${config.baseUrl}/login/?next=/home`);
+      await this.waitForLoad();
+    });
   }
 
-  @step('LoginPage: Click Associate Login')
   async clickAssociateLogin(): Promise<void> {
-    await this.associateLoginLink.click();
-    await this.waitForLoad();
+    return await step('LoginPage: Click Associate Login', async () => {
+      await this.associateLoginLink.click();
+      await this.waitForLoad();
+    });
   }
 
-  @step('LoginPage: Click Email/Password Login')
+  async clickTraineeLogin(): Promise<void> {
+    return await step('LoginPage: Click Trainee Login', async () => {
+      await this.traineeLoginLink.click();
+      await this.waitForLoad();
+    });
+  }
+
   async clickEmailPasswordLogin(): Promise<void> {
-    // Wait for any loading indicators to disappear
-    await this.page.locator('[data-loading="true"]').waitFor({ 
-      state: 'hidden', 
-      timeout: 5000 
-    }).catch(() => {});
-    
-    await this.emailPasswordButton.waitForVisible();
-    await this.emailPasswordButton.click();
-    await this.waitForLoad();
+    return await step('LoginPage: Click Email/Password Login', async () => {
+      await this.emailPasswordButton.waitForVisible();
+      await this.emailPasswordButton.click();
+      await this.page.waitForSelector('input[name="username"]', { timeout: 5000 });
+      await this.waitForLoad();
+    });
   }
 
-  @step('LoginPage: Fill username "{0}"')
   async fillUsername(username: string): Promise<void> {
-    await this.usernameInput.waitForVisible();
-    await this.usernameInput.fill(username);
+    return await step(`LoginPage: Fill username "${username}"`, async () => {
+      await this.usernameInput.waitForVisible();
+      await this.usernameInput.fill(username);
+    });
   }
 
-  @step('LoginPage: Fill password')
   async fillPassword(password: string): Promise<void> {
-    await this.passwordInput.fill(password);
+    return await step('LoginPage: Fill password', async () => {
+      await this.passwordInput.fill(password);
+    });
   }
 
-  @step('LoginPage: Click Submit')
   async submit(): Promise<void> {
-    await this.submitButton.click();
-    await this.waitForLoad();
+    return await step('LoginPage: Click Submit', async () => {
+      await this.submitButton.click();
+      await this.waitForLoad();
+    });
   }
 
-  @step('LoginPage: Complete 3-step login with email "{0}"')
+  /**
+   * Convenience method for backward compatibility
+   * For production use, prefer AuthSteps.loginAsAssociate()
+   */
   async login(email: string, password: string): Promise<void> {
-    await this.clickAssociateLogin();
-    await this.clickEmailPasswordLogin();
-    await this.fillUsername(email);
-    await this.fillPassword(password);
-    await this.submit();
+    return await step(`LoginPage: Complete login with email "${email}"`, async () => {
+      await this.clickAssociateLogin();
+      await this.clickEmailPasswordLogin();
+      await this.fillUsername(email);
+      await this.fillPassword(password);
+      await this.submit();
+    });
   }
 }

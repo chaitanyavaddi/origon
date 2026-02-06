@@ -1,0 +1,106 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "🎯 Run Current Test (Headed)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "${file}", "--headed"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "test"
+      }
+    },
+    {
+      "name": "🐛 Debug Current Test",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "${file}", "--debug"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "test"
+      }
+    },
+    {
+      "name": "▶️ Run Current Test (Headless)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "${file}"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "test"
+      }
+    },
+    {
+      "name": "🎨 Run Tests (UI Mode)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "--ui"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "test"
+      }
+    },
+    {
+      "name": "🔄 Run All Tests (Parallel)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "--workers=4"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "test"
+      }
+    },
+    {
+      "name": "📋 Run All Tests (Serial)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "--workers=1"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "test"
+      }
+    },
+    {
+      "name": "🚀 Run with External Launch/Execution IDs",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "${file}", "--headed"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "test",
+        "LAUNCH_ID": "external_launch_123",
+        "EXECUTION_ID": "external_execution_456"
+      }
+    },
+    {
+      "name": "🏗️ Run Tests (Staging)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "${file}", "--headed"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "staging"
+      }
+    },
+    {
+      "name": "🌐 Run Tests (Production)",
+      "type": "node",
+      "request": "launch",
+      "program": "${workspaceFolder}/node_modules/.bin/playwright",
+      "args": ["test", "${file}", "--headed"],
+      "console": "integratedTerminal",
+      "env": {
+        "ENV": "prod"
+      }
+    }
+  ]
+}
